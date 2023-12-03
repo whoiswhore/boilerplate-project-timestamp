@@ -28,7 +28,6 @@ app.get('/api/:date', (req, res) => {
   const { date } = req.params;
 
   let inputDate;
-  console.log(inputDate);
   if (!isNaN(date)) {
     // If it's a number, assume it's a timestamp
     inputDate = new Date(parseInt(date));
