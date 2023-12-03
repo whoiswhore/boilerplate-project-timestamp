@@ -24,16 +24,18 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get('/api/:date', (req, res) => {
-  const { date } = req.params;
-
+app.get('/api/:date?', (req, res) => {
   let inputDate;
-  if (!isNaN(date)) {
+
+  if (!req.params.date) {
+    // If date parameter is empty, use the current time
+    inputDate = new Date();
+  } else if (!isNaN(req.params.date)) {
     // If it's a number, assume it's a timestamp
-    inputDate = new Date(parseInt(date));
+    inputDate = new Date(parseInt(req.params.date));
   } else {
     // Otherwise, assume it's a date string
-    inputDate = new Date(date);
+    inputDate = new Date(req.params.date);
   }
 
   if (isNaN(inputDate.getTime())) {
@@ -47,6 +49,11 @@ app.get('/api/:date', (req, res) => {
   };
 
   res.json(output);
+});
+
+app.get('/api', (req, res) => {
+  const currentUnixTime = new Date().getTime();
+  res.json({ unix: currentUnixTime });
 });
 
 // listen for requests :)
